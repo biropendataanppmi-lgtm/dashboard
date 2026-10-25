@@ -14,8 +14,8 @@
     {
       "binding": "DB",
       "database_name": "ppmi-db",
-      // Ganti dengan database_id dari `wrangler d1 create ppmi-db` saat deployment pertama.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Database D1 produksi milik akun Cloudflare Biro (ID ini bukan rahasia).
+      "database_id": "85c13ac7-f9d5-442f-a237-6aad96a7a590",
       "migrations_dir": "migrations"
     }
   ],
