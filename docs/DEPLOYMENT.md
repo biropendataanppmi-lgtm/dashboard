@@ -12,12 +12,20 @@
 
 ## 2. Database
 
-```bash
-npx wrangler login
-npx wrangler d1 create ppmi-db
-# salin database_id dari keluaran ke wrangler.jsonc
-npm run db:migrate:remote
-```
+Database `ppmi-db` sudah dibuat (25 Oktober 2026) dan ID-nya sudah ada di `wrangler.jsonc`. Tabel dibuat otomatis oleh perintah deploy (`npm run deploy:ci` menjalankan migrasi lalu deploy).
+
+## 2a. Deploy otomatis dari GitHub (tanpa terminal)
+
+Cloudflare Dashboard › Workers & Pages › Create › **Import a repository** › pilih `biropendataanppmi-lgtm/dashboard`:
+
+| Isian | Nilai |
+|---|---|
+| Project name | `sistem-pendataan-ppmi` (harus sama dengan `name` di `wrangler.jsonc`) |
+| Build command | `npm run build` |
+| Deploy command | `npm run deploy:ci` |
+| Production branch | `main` |
+
+Setiap merge ke `main` akan ter-deploy otomatis. GitHub Pages tidak dipakai (Settings › Pages › Source: None).
 
 ## 3. Cloudflare Access (login)
 
