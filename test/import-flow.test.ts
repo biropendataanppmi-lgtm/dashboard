@@ -122,7 +122,7 @@ describe('pembatalan perubahan (Jawaban H1)', () => {
     const upd = await applyImport(db, ADMIN, (await createPreview(db, ADMIN, 'u.csv', toCsv([{ ...a, Fakultas: '' }]), 'update_existing')).jobId, confirm);
     expect(await db.prepare(`SELECT faculty n FROM students`).first('n')).toBeNull();
     await applyRevert(db, ADMIN, upd.version, 'Kolom fakultas terhapus tidak sengaja');
-    expect(await db.prepare(`SELECT faculty n FROM students`).first('n')).toBe('Fakultas Contoh');
+    expect(await db.prepare(`SELECT faculty n FROM students`).first('n')).toBe('Ushuluddin');
   });
 });
 

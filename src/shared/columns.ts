@@ -66,6 +66,30 @@ export const COLUMNS: ColumnDef[] = [
 ];
 
 export const COLUMN_BY_HEADER = new Map(COLUMNS.map((c) => [c.header, c]));
+
+/**
+ * Header di spreadsheet asli Biro (contoh "Nama Lengkap (Latin)", "Kekeluargaan/Konsulat").
+ * Header lain dicocokkan tanpa membedakan huruf besar/kecil, spasi, garis bawah, dan tanda baca,
+ * sehingga "Email Address" dan "Email_Address" sama.
+ */
+const HEADER_ALIASES: Record<string, StudentField> = {
+  'Domisili di Indonesia (Kabupaten/Kota)': 'origin_regency',
+  'Domisili di Indonesia (Provinsi)': 'origin_province',
+};
+
+export function headerKey(header: string): string {
+  return header.normalize('NFKC').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+const COLUMN_BY_HEADER_KEY = new Map<string, ColumnDef>([
+  ...COLUMNS.map((c) => [headerKey(c.header), c] as const),
+  ...Object.entries(HEADER_ALIASES).map(([h, f]) => [headerKey(h), COLUMNS.find((c) => c.field === f)!] as const),
+]);
+
+/** Kolom untuk header file, atau null jika header tidak dikenal. */
+export function resolveHeader(header: string): ColumnDef | null {
+  return COLUMN_BY_HEADER.get(header) ?? COLUMN_BY_HEADER_KEY.get(headerKey(header)) ?? null;
+}
 export const COLUMN_BY_FIELD = new Map(COLUMNS.map((c) => [c.field, c]));
 export const EDITABLE_FIELDS = STUDENT_FIELDS.filter((f): f is EditableField => f !== 'student_code');
 

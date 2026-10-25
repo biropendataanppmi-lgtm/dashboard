@@ -33,13 +33,14 @@ async function loadStudent(db: D1Database, code: string): Promise<StudentRow> {
 }
 
 /** Validasi suntingan memakai aturan yang sama dengan impor CSV agar tidak ada dua sumber aturan. */
-function validateEdit(code: string, values: StudentValues): Issue[] {
+function validateEdit(code: string, values: StudentValues): { issues: Issue[]; values: StudentValues } {
   const headers = COLUMNS.map((c) => c.header);
   const cells = COLUMNS.map((c) => (c.field === 'student_code' ? code : values[c.field as EditableField] ?? ''));
   const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
   const text = headers.join(',') + '\n' + cells.map(esc).join(',');
   const res = validateCsvText(text);
-  return [...res.fileIssues, ...(res.rows[0]?.issues ?? [])];
+  // Nilai hasil normalisasi (ejaan baku kategori, perbaikan tahun) dipakai untuk penyimpanan.
+  return { issues: [...res.fileIssues, ...(res.rows[0]?.issues ?? [])], values: { ...values, ...(res.rows[0]?.values ?? {}) } };
 }
 
 export async function editStudent(
@@ -58,7 +59,9 @@ export async function editStudent(
   const merged: StudentValues = { ...prev };
   for (const f of EDITABLE_FIELDS) if (f in input) merged[f] = cleanText(input[f] ?? null);
 
-  const issues = validateEdit(code, merged);
+  const checked = validateEdit(code, merged);
+  Object.assign(merged, checked.values);
+  const issues = checked.issues;
   const errors = issues.filter((i) => i.severity === 'error');
   if (errors.length) throw new ChangeError(400, 'Data tidak valid.', errors);
 

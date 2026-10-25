@@ -122,3 +122,60 @@ describe('perencanaan impor', () => {
     expect(plan.summary.duplicateCandidates).toBe(1);
   });
 });
+
+describe('daftar baku dan spreadsheet asli', () => {
+  const SHEET_HEADERS: Record<string, string> = {
+    ID_Mahasiswa: 'ID Mahasiswa',
+    Email_Address: 'Email Address',
+    Jenis_Kelamin: 'Jenis Kelamin',
+    Nama_Lengkap_Latin: 'Nama Lengkap (Latin)',
+    Nama_Lengkap_Arab: 'Nama Lengkap (Arab)',
+    Nomor_Paspor: 'Nomor Paspor',
+    Tempat_Lahir: 'Tempat Lahir',
+    Tanggal_Lahir: 'Tanggal Lahir',
+    Domisili_Indonesia_Kabupaten_Kota: 'Domisili di Indonesia (Kabupaten/Kota)',
+    Domisili_Indonesia_Provinsi: 'Domisili di Indonesia (Provinsi)',
+    Nomor_WhatsApp_Aktif: 'Nomor WhatsApp (Aktif)',
+    Nomor_Telepon_Aktif: 'Nomor Telepon (Aktif)',
+    Kedatangan_di_Mesir: 'Kedatangan di Mesir',
+    Domisili_di_Mesir: 'Domisili di Mesir',
+    Kekeluargaan_Konsulat: 'Kekeluargaan/Konsulat',
+    Jenjang_Pendidikan: 'Jenjang Pendidikan',
+    Fakultas: 'Fakultas',
+    Jurusan: 'Jurusan',
+    Mediator: 'Mediator',
+  };
+
+  it('header spreadsheet Biro dikenali tanpa diubah namanya', () => {
+    const csv = toCsv([student()]).replace(/^[^\r]*/, HEADERS.map((h) => `"${SHEET_HEADERS[h]}"`).join(','));
+    const res = validateCsvText(csv);
+    expect(res.fileIssues).toEqual([]);
+    expect(res.presentFields).toHaveLength(18);
+    expect(res.rows[0].issues).toEqual([]);
+  });
+
+  it('header yang sama dalam dua ejaan dianggap ganda', () => {
+    const res = validateCsvText('ID_Mahasiswa,Nama_Lengkap_Latin,Nama Lengkap (Latin)\n25-0001,A,A\n');
+    expect(res.fileIssues.map((i) => i.code)).toContain('header_ganda');
+  });
+
+  it('kategori disimpan dengan ejaan baku; nilai di luar daftar tetap disimpan dengan peringatan', () => {
+    const res = validateCsvText(
+      toCsv([
+        student({ Kekeluargaan_Konsulat: 'kmj', Domisili_di_Mesir: 'hay  sabi’', Fakultas: 'syariah WAL qanun', Jenjang_Pendidikan: "ma'had" }),
+        student({ Domisili_Indonesia_Provinsi: 'Papua' }),
+      ]),
+    );
+    expect(res.rows[0].values).toMatchObject({ kekeluargaan: 'KMJ', egypt_domicile: "Hay Sabi'", faculty: 'Syariah wal Qanun', education_level: "Ma'had" });
+    expect(res.rows[0].issues).toEqual([]);
+    expect(res.rows[1].values.origin_province).toBe('Papua');
+    expect(res.rows[1].issues.map((i) => `${i.severity}:${i.code}`)).toEqual(['warning:kategori_tidak_dikenal']);
+  });
+
+  it('tahun kedatangan 00YY dibaca sebagai 20YY dengan peringatan; tanggal lahir 00YY tetap error', () => {
+    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '25-0001', Kedatangan_di_Mesir: '0025-12-29' }), student({ Tanggal_Lahir: '0005-01-01' })]));
+    expect(res.rows[0].values.arrival_date).toBe('2025-12-29');
+    expect(res.rows[0].issues.map((i) => i.code)).toEqual(['tahun_diperbaiki']);
+    expect(res.rows[1].issues.map((i) => i.code)).toEqual(['format_tanggal']);
+  });
+});
