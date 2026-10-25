@@ -1,0 +1,3 @@
+# Salin menjadi .dev.vars untuk pengembangan lokal. File .dev.vars tidak di-commit.
+AUTH_MODE=dev
+DEV_USER_EMAIL=admin.lokal@example.org
