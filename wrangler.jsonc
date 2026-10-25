@@ -1,0 +1,29 @@
+// Konfigurasi Cloudflare Worker. Nilai rahasia TIDAK ditulis di sini (lihat docs/DEPLOYMENT.md).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sistem-pendataan-ppmi",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ppmi-db",
+      // Ganti dengan database_id dari `wrangler d1 create ppmi-db` saat deployment pertama.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // Produksi selalu "access". Mode "dev" hanya diaktifkan lewat .dev.vars di komputer lokal.
+    "AUTH_MODE": "access",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  },
+  "observability": { "enabled": true }
+}
