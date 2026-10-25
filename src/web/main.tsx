@@ -8,7 +8,11 @@ import { HistoryTab } from './pages/dataset/HistoryTab';
 import { IssuesTab } from './pages/dataset/IssuesTab';
 import { StudentsTab } from './pages/dataset/StudentsTab';
 import { LogsPage } from './pages/Logs';
-import { AccountPage, LandingPage, PlannedPage } from './pages/Misc';
+import { AccountPage, LandingPage } from './pages/Misc';
+import { KekeluargaanPage } from './pages/analytics/Kekeluargaan';
+import { KualitasPage } from './pages/analytics/Kualitas';
+import { PendidikanPage } from './pages/analytics/Pendidikan';
+import { PersebaranPage } from './pages/analytics/Persebaran';
 import { OverviewPage } from './pages/Overview';
 import { SessionGate } from './session';
 import './styles.css';
@@ -45,22 +49,10 @@ createRoot(document.getElementById('root')!).render(
             }
           >
             <Route index element={<OverviewPage />} />
-            <Route
-              path="kekeluargaan"
-              element={<PlannedPage title="Kekeluargaan" description="Distribusi mahasiswa per kekeluargaan." items={['distribusi seluruh kekeluargaan', 'komposisi jenis kelamin dan jenjang per kekeluargaan', 'tabel ringkasan', 'panel detail']} />}
-            />
-            <Route
-              path="pendidikan"
-              element={<PlannedPage title="Pendidikan" description="Struktur pendidikan berdasarkan jenjang, fakultas, dan jurusan." items={['grafik jenjang', 'grafik fakultas dan jurusan', 'tabel jurusan yang dapat dicari', 'panel detail fakultas']} />}
-            />
-            <Route
-              path="persebaran"
-              element={<PlannedPage title="Persebaran" description="Asal mahasiswa di Indonesia dan domisili di Mesir." items={['Top 10 provinsi', 'Top 10 kabupaten/kota', 'domisili di Mesir', 'peta Indonesia (jika andal)']} />}
-            />
-            <Route
-              path="kualitas-data"
-              element={<PlannedPage title="Kualitas Data" description="Kelengkapan dan konsistensi data untuk Biro Data dan Statistika." items={['kelengkapan per kolom', 'cakupan kategori', 'variasi penulisan', 'indikasi duplikasi']} />}
-            />
+            <Route path="kekeluargaan" element={<KekeluargaanPage />} />
+            <Route path="pendidikan" element={<PendidikanPage />} />
+            <Route path="persebaran" element={<PersebaranPage />} />
+            <Route path="kualitas-data" element={<KualitasPage />} />
             <Route path="dataset" element={<DatasetPage />}>
               <Route index element={<ImportTab />} />
               <Route path="mahasiswa" element={<StudentsTab />} />

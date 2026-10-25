@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { EmptyState, PageHeader } from '../components/ui';
+import { PageHeader } from '../components/ui';
 import { fmtTime } from '../format';
 import { useSession } from '../session';
 
@@ -23,18 +23,6 @@ export function LandingPage() {
   );
 }
 
-/** Halaman yang belum dibangun pada tahap ini ditandai jujur, bukan diisi angka contoh. */
-export function PlannedPage({ title, description, items }: { title: string; description: string; items: string[] }) {
-  return (
-    <>
-      <PageHeader title={title} description={description} />
-      <EmptyState title="Halaman ini dibangun pada tahap berikutnya">
-        Rencana isi: {items.join(', ')}.
-      </EmptyState>
-    </>
-  );
-}
-
 export function AccountPage() {
   const s = useSession();
   return (
@@ -51,7 +39,7 @@ export function AccountPage() {
           <dt>Waktu dibuka</dt>
           <dd>{fmtTime(new Date().toISOString())}</dd>
           <dt>Aplikasi</dt>
-          <dd>Sistem Pendataan PPMI Mesir 2026/2027 · V1 tahap 1</dd>
+          <dd>Sistem Pendataan PPMI Mesir 2026/2027 · V1 tahap 2</dd>
         </dl>
         <div className="btn-row">
           <a className="btn" href="/cdn-cgi/access/logout">

@@ -30,7 +30,7 @@ export function HBarChart({
   onSelect?: (key: string) => void;
   selectedKey?: string | null;
 }) {
-  if (items.length === 0) {
+  if (items.length === 0 || items.every((i) => i.count === 0)) {
     return (
       <div className="state">
         <b>Tidak ada data untuk ditampilkan</b>
@@ -47,9 +47,14 @@ export function HBarChart({
           const title = `${i.label}: ${fmt(i.count)} (${pct(i.count, denominator) ?? '—'} dari ${denominatorLabel})${i.note ? ` — ${i.note}` : ''}`;
           const row = (
             <>
-              <span className="hbar-label">{i.label}</span>
+              <span className="hbar-label">
+                {i.label}
+                {i.note ? <small className="hbar-note"> · {i.note}</small> : null}
+              </span>
               <span className="hbar-track" aria-hidden="true">
-                <span className={`hbar-fill${i.muted ? ' muted' : ''}`} style={{ display: 'block', width: `${max ? (i.count / max) * 100 : 0}%`, outline: selectedKey === i.key ? '2px solid var(--pine)' : undefined }} />
+                {i.count > 0 ? (
+                  <span className={`hbar-fill${i.muted ? ' muted' : ''}`} style={{ display: 'block', width: `${max ? (i.count / max) * 100 : 0}%`, outline: selectedKey === i.key ? '2px solid var(--pine)' : undefined }} />
+                ) : null}
               </span>
               <span className="hbar-value">
                 {fmt(i.count)} <small>{pct(i.count, denominator)}</small>

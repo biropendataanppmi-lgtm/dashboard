@@ -70,7 +70,7 @@ export function OverviewPage() {
               </section>
               <section className="card">
                 <h2>Jenjang pendidikan</h2>
-                <p className="card-sub">Nilai dikelompokkan apa adanya sampai daftar baku jenjang ditetapkan.</p>
+                <p className="card-sub">Sesuai daftar baku: Daurah Lughah, Ma'had, S1.</p>
                 <HBarChart items={d.education.items} denominator={d.education.knownTotal} denominatorLabel="record dengan jenjang terisi" unknown={d.education.unknown} />
               </section>
             </div>

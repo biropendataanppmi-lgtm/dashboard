@@ -15,6 +15,7 @@ Dokumen ini memisahkan keputusan pemilik proyek, asumsi teknis sementara, dan ha
 | H7 | Tidak ada status kemahasiswaan | Hanya alasan penonaktifan (pulang/lulus, data salah, lainnya) |
 | H9 | Agregat dibagikan lewat laporan berkala | V1 hanya untuk admin Biro |
 | H13 | Anggaran Workers Paid tersedia | |
+| Daftar baku | Kekeluargaan, jenjang, provinsi, domisili Mesir, fakultas (25 Okt 2026) | `src/shared/reference.ts`; nilai di luar daftar disimpan dengan peringatan |
 | Login | Cloudflare Access | Diimplementasikan; menunggu konfigurasi akun |
 
 ## Asumsi sementara (mudah diubah)
@@ -25,6 +26,8 @@ Dokumen ini memisahkan keputusan pemilik proyek, asumsi teknis sementara, dan ha
 | Preview impor berlaku 24 jam | `src/shared/columns.ts` |
 | Nilai jenis kelamin yang dikenali (Laki-laki/Perempuan, L/P, Banin/Banat, Pria/Wanita) | `src/shared/normalize.ts` |
 | Tahun kedatangan valid 1950 sampai tahun depan | `src/shared/validation.ts` |
+| Tahun kedatangan `00YY` dibaca `20YY` (peringatan); tanggal lahir `00YY` tetap error karena abadnya tidak dapat ditebak | `src/shared/normalize.ts` |
+| Indikasi duplikasi di Kualitas Data: paspor, email, WhatsApp, atau nama Latin + tanggal lahir sama | `src/worker/analytics.ts` |
 | Identitas minimum: ID dan nama Latin | `src/shared/columns.ts` (`required`) |
 | Kandidat duplikat: paspor, email, atau nomor telepon sama | `src/shared/plan.ts` |
 | Kategori dikelompokkan tanpa membedakan huruf besar/kecil | `src/worker/stats.ts` |
@@ -33,9 +36,9 @@ Dokumen ini memisahkan keputusan pemilik proyek, asumsi teknis sementara, dan ha
 
 ## Belum diputuskan
 
-- Daftar resmi 16 kekeluargaan dan urutannya. Sampai ada, kategori ditampilkan sesuai isi data.
-- Daftar baku jenjang (termasuk tingkat Ma'had Bu'uts), fakultas, jurusan, provinsi, kabupaten/kota, domisili Mesir.
-- Pembedaan "tidak berlaku" (misalnya siswa ma'had tanpa fakultas) dan "belum diisi". Saat ini keduanya tampil sebagai belum diisi.
+- Daftar provinsi baku berisi 35 provinsi; Papua, Papua Barat, dan Papua Pegunungan belum ada. Sampai ditambahkan, nilai itu disimpan dengan peringatan "di luar daftar baku".
+- Daftar baku kabupaten/kota dan jurusan.
+- Pembedaan "tidak berlaku" (misalnya Daurah Lughah tanpa fakultas dan jurusan) dan "belum diisi". Saat ini keduanya tampil sebagai belum diisi.
 - Kegunaan tertulis tiap kolom data pribadi (terutama `Mediator`).
 - Retensi riwayat perubahan, backup, dan log.
 - Ambang angka kecil untuk laporan yang dibagikan ke luar Biro.

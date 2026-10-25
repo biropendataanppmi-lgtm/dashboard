@@ -70,3 +70,14 @@ export function arrivalYear(value: string): number | null {
   if (isValidIsoDate(value)) return Number(value.slice(0, 4));
   return null;
 }
+
+/**
+ * Tahun 00YY (contoh 0025 atau 0025-12-29) dibaca sebagai 20YY. Mengembalikan nilai yang
+ * diperbaiki, atau null jika nilai tidak berbentuk 00YY. Hanya dipakai untuk kedatangan,
+ * karena tahun lahir dua digit tidak dapat ditebak abadnya.
+ */
+export function repairTwoDigitYear(value: string): string | null {
+  if (!/^00\d{2}(-\d{2}-\d{2})?$/.test(value)) return null;
+  const repaired = `20${value.slice(2)}`;
+  return arrivalYear(repaired) == null ? null : repaired;
+}

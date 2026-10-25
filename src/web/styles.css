@@ -170,6 +170,8 @@ tr.clickable:hover td { background: #f7faf4; }
 .hbar-fill.muted { background: var(--bar-muted); }
 .hbar-value { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 70px; text-align: right; }
 .hbar-value small { color: var(--ink-3); }
+.hbar-note { color: var(--ink-3); font-size: 12px; }
+.hbar-row[aria-pressed=true] .hbar-label { font-weight: 700; }
 .hbar-row:hover .hbar-fill:not(.muted) { filter: brightness(1.15); }
 .chart-foot { font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 8px; display: grid; gap: 2px; }
 
@@ -190,3 +192,16 @@ tr.clickable:hover td { background: #f7faf4; }
 .landing p { margin: 0; color: #c7d6c9; max-width: 60ch; }
 .landing .btn.primary { background: var(--lime); border-color: var(--lime); color: var(--pine); font-size: 16px; padding: 11px 20px; width: fit-content; }
 .landing .fine { font-size: 13px; color: #9fb5a3; }
+
+/* ---------- Halaman analitik ---------- */
+.mini-comp { display: flex; height: 8px; width: 96px; border-radius: 4px; overflow: hidden; background: var(--bar-muted); }
+.mini-comp > i { display: block; height: 100%; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1200px) { .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1000px) { .grid-3 { grid-template-columns: minmax(0, 1fr); } }
+.panel-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; flex-wrap: wrap; }
+.pct-bar { display: inline-block; width: 80px; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 8px; }
+.pct-bar > i { display: block; height: 100%; background: var(--bar); }
+.pct-bar.low > i { background: var(--bar-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }

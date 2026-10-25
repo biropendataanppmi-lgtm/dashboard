@@ -14,7 +14,7 @@ export function parseFilters(q: Record<string, string | undefined>): GlobalFilte
   return { year, kekeluargaan: kek, gender };
 }
 
-function whereClause(f: GlobalFilters): { sql: string; params: (string | number)[] } {
+export function whereClause(f: GlobalFilters): { sql: string; params: (string | number)[] } {
   const parts = [`record_status = 'active'`];
   const params: (string | number)[] = [];
   if (f.year != null) {
@@ -48,7 +48,7 @@ export interface Distribution {
 
 const CATEGORY_COLUMNS = new Set(['kekeluargaan', 'education_level', 'origin_province', 'faculty', 'major', 'egypt_domicile', 'origin_regency']);
 
-async function distribution(db: D1Database, column: string, f: GlobalFilters): Promise<Distribution> {
+export async function distribution(db: D1Database, column: string, f: GlobalFilters): Promise<Distribution> {
   if (!CATEGORY_COLUMNS.has(column)) throw new Error('kolom tidak diizinkan');
   const w = whereClause(f);
   // Pengelompokan tanpa membedakan huruf besar/kecil; label = ejaan yang paling sering muncul.

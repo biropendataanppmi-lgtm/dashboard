@@ -1,7 +1,8 @@
 // Validasi file dan baris CSV (Dokumen Induk §4.3–§4.5). Fungsi murni: dapat diuji tanpa database.
-import { COLUMNS, COLUMN_BY_HEADER, type ColumnDef, type EditableField, type StudentField, type StudentValues } from './columns';
+import { COLUMNS, resolveHeader, type ColumnDef, type EditableField, type StudentField, type StudentValues } from './columns';
 import { parseCsv, CsvError } from './csv';
-import { STUDENT_CODE_PATTERN, arrivalYear, cleanText, isValidIsoDate, normalizeGender } from './normalize';
+import { STUDENT_CODE_PATTERN, arrivalYear, cleanText, isValidIsoDate, normalizeGender, repairTwoDigitYear } from './normalize';
+import { canonicalCategory } from './reference';
 
 export type Severity = 'error' | 'warning';
 
@@ -50,13 +51,13 @@ export function validateCsvText(text: string, now: Date = new Date()): Validated
   const seen = new Set<string>();
   const columnAt: (ColumnDef | null)[] = [];
   for (const header of parsed.headers) {
-    const col = COLUMN_BY_HEADER.get(header) ?? null;
+    const col = resolveHeader(header);
     if (!col) {
       fileIssues.push({ severity: 'error', code: 'header_tidak_dikenal', column: header || '(kosong)', message: `Kolom "${header || '(tanpa nama)'}" tidak dikenali. Hapus kolom ini atau sesuaikan namanya dengan format impor.` });
-    } else if (seen.has(header)) {
-      fileIssues.push({ severity: 'error', code: 'header_ganda', column: header, message: `Kolom "${header}" muncul lebih dari sekali.` });
+    } else if (seen.has(col.header)) {
+      fileIssues.push({ severity: 'error', code: 'header_ganda', column: col.header, message: `Kolom "${col.header}" muncul lebih dari sekali.` });
     }
-    seen.add(header);
+    if (col) seen.add(col.header);
     columnAt.push(col);
   }
   for (const col of COLUMNS) {
@@ -88,13 +89,13 @@ export function validateCsvText(text: string, now: Date = new Date()): Validated
 
     columnAt.forEach((col, idx) => {
       if (!col) return;
-      const value = cleanText(cells[idx] ?? '');
+      const { value, issues: cellIssues } = normalizeCell(col, cleanText(cells[idx] ?? ''));
       if (col.field === 'student_code') {
         studentCode = value;
       } else {
         values[col.field as EditableField] = value;
       }
-      issues.push(...checkValue(col, value, maxYear));
+      issues.push(...cellIssues, ...checkValue(col, value, maxYear));
     });
 
     // Tahun kedatangan vs prefiks ID: ID tetap walau tahun dikoreksi (Jawaban H4), jadi hanya warning.
@@ -124,6 +125,27 @@ export function validateCsvText(text: string, now: Date = new Date()): Validated
   }
 
   return { presentFields, fileIssues, rows };
+}
+
+/** Penyesuaian nilai yang aman sebelum disimpan; setiap penyesuaian dilaporkan. */
+function normalizeCell(col: ColumnDef, value: string | null): { value: string | null; issues: Issue[] } {
+  if (value == null) return { value, issues: [] };
+  const at = { column: col.header };
+  if (col.kind === 'arrival') {
+    // Spreadsheet kadang menyimpan tahun dua digit sebagai 00YY (contoh 0025-12-29).
+    const repaired = repairTwoDigitYear(value);
+    if (repaired) {
+      return { value: repaired, issues: [{ severity: 'warning', code: 'tahun_diperbaiki', ...at, message: `Tahun kedatangan tertulis 00YY; dibaca sebagai 20YY (${repaired.slice(0, 4)}). Periksa sel ini di spreadsheet.` }] };
+    }
+  }
+  if (col.kind === 'category') {
+    const canonical = canonicalCategory(col.field as EditableField, value);
+    if (canonical === null) {
+      return { value, issues: [{ severity: 'warning', code: 'kategori_tidak_dikenal', ...at, message: `${col.label} tidak ada di daftar baku. Nilai tetap disimpan apa adanya dan dihitung sebagai kategori tersendiri.` }] };
+    }
+    if (canonical) return { value: canonical, issues: [] };
+  }
+  return { value, issues: [] };
 }
 
 function checkValue(col: ColumnDef, value: string | null, maxYear: number): Issue[] {
