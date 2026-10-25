@@ -1,7 +1,7 @@
 // Konfigurasi Cloudflare Worker. Nilai rahasia TIDAK ditulis di sini (lihat docs/DEPLOYMENT.md).
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "sistem-pendataan-ppmi",
+  "name": "nationaldatabaseppmi",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
