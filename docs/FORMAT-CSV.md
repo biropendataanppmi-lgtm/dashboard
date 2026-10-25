@@ -9,7 +9,9 @@
 
 ## Kolom
 
-Urutan kolom bebas. Nama header harus persis seperti di bawah.
+Urutan kolom bebas. Header dapat ditulis seperti di tabel (`Nama_Lengkap_Latin`) atau seperti di spreadsheet Biro (`Nama Lengkap (Latin)`, `Kekeluargaan/Konsulat`, `Domisili di Indonesia (Provinsi)`, dan seterusnya). Huruf besar/kecil, spasi, garis bawah, dan tanda baca diabaikan saat mencocokkan header.
+
+**Spreadsheet Biro saat ini belum memiliki kolom ID.** Tambahkan kolom `ID Mahasiswa` (format `YY-NNNN`) sebelum mengekspor CSV; tanpa kolom ini file ditolak.
 
 | Header | Wajib | Keterangan |
 |---|---|---|
@@ -25,7 +27,7 @@ Urutan kolom bebas. Nama header harus persis seperti di bawah.
 | `Domisili_Indonesia_Provinsi` | | |
 | `Nomor_WhatsApp_Aktif` | | Teks; tanda + dan nol di depan dipertahankan. |
 | `Nomor_Telepon_Aktif` | | Teks; tanda + dan nol di depan dipertahankan. |
-| `Kedatangan_di_Mesir` | | Kedatangan **pertama** di Mesir (angkatan). Tahun `YYYY` atau tanggal `YYYY-MM-DD`, Masehi. |
+| `Kedatangan_di_Mesir` | | Kedatangan **pertama** di Mesir (angkatan). Tahun `YYYY` atau tanggal `YYYY-MM-DD`, Masehi. Tahun `00YY` (contoh `0025-12-29`) dibaca sebagai `20YY` dengan peringatan. |
 | `Domisili_di_Mesir` | | |
 | `Kekeluargaan_Konsulat` | | |
 | `Jenjang_Pendidikan` | | |
@@ -34,6 +36,20 @@ Urutan kolom bebas. Nama header harus persis seperti di bawah.
 | `Mediator` | | |
 
 `Status_Data` tidak ada di CSV; status aktif/nonaktif dikelola sistem.
+
+## Daftar baku
+
+Nilai kolom berikut dicocokkan dengan daftar baku Biro (25 Oktober 2026) tanpa membedakan huruf besar/kecil, spasi ganda, dan jenis tanda kutip, lalu disimpan dengan ejaan baku (contoh `kmj` menjadi `KMJ`, `hay sabi’` menjadi `Hay Sabi'`). Nilai yang tidak ada di daftar **tetap disimpan apa adanya** dengan peringatan `kategori_tidak_dikenal`, dan tampil di Kualitas Data. Daftar ada di `src/shared/reference.ts`.
+
+| Kolom | Daftar |
+|---|---|
+| Kekeluargaan | FOSGAMA, GAMAJATIM, HMMSU, IKMAL, KEMASS, KKS, KMA, KMB, KMJ, KMKM, KMM, KMNTB, KPJ, KPMJB, KSMR, KSW |
+| Jenjang | Daurah Lughah, Ma'had, S1 |
+| Provinsi | 35 provinsi (Papua, Papua Barat, dan Papua Pegunungan belum ada di daftar) |
+| Domisili di Mesir | Abbasiyah, Bu'uts, Darrasah dan sekitarnya, Hay Asyir, Hay Sabi', Hay Tsamin, Mukottom, Rab'ah, Sayyidah Aisyah, Zahra |
+| Fakultas | Dakwah, Dirasat Insaniyah, Dirasat Islamiyah (Banat), Dirasat Islamiyah (Banin), Kedokteran, Lughah Arabiyah, Ma'had, Syariah wal Qanun, Teknik, Tijarah, Ushuluddin |
+
+Kabupaten/kota dan jurusan belum memiliki daftar baku; variasi ejaannya ditampilkan di Kualitas Data.
 
 ## Arti sel kosong dan kolom yang tidak ada
 
@@ -68,7 +84,7 @@ Error tingkat file (seluruh file ditolak): file kosong, header tidak dikenal, he
 
 ## Peringatan (diterapkan setelah dikonfirmasi)
 
-Kolom analitik kosong, jenis kelamin tidak dikenali, format email/telepon meragukan, tahun kedatangan berbeda dari dua digit awal ID (ID tidak diubah), record nonaktif ikut diperbarui, nilai akan dikosongkan, dan **kandidat duplikat** (paspor, email, atau telepon sama dengan record lain). Kandidat duplikat tidak pernah digabung otomatis.
+Kolom analitik kosong, jenis kelamin tidak dikenali, kategori di luar daftar baku, tahun kedatangan `00YY` yang dibaca sebagai `20YY`, format email/telepon meragukan, tahun kedatangan berbeda dari dua digit awal ID (ID tidak diubah), record nonaktif ikut diperbarui, nilai akan dikosongkan, dan **kandidat duplikat** (paspor, email, atau telepon sama dengan record lain). Kandidat duplikat tidak pernah digabung otomatis.
 
 Saat konfirmasi, admin dapat memilih untuk menerapkan baris berperingatan atau melewatinya.
 

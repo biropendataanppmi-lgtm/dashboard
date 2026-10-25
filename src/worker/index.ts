@@ -7,6 +7,7 @@ import type { AppEnv } from './env';
 import { ImportError, applyImport, cancelImport, createPreview, getPreview } from './importService';
 import { nowIso, writeLog } from './log';
 import { datasetMeta, filterOptions, overview, parseFilters } from './stats';
+import { kekeluargaanSummary, kualitas, pendidikan, persebaran, profile } from './analytics';
 
 const app = new Hono<AppEnv>();
 
@@ -46,6 +47,28 @@ api.get('/stats/meta', async (c) => c.json({ meta: await datasetMeta(c.env.DB), 
 api.get('/stats/overview', async (c) => {
   const filters = parseFilters(c.req.query());
   return c.json({ meta: await datasetMeta(c.env.DB), filters, data: await overview(c.env.DB, filters) });
+});
+
+api.get('/stats/kekeluargaan', async (c) => {
+  const filters = parseFilters(c.req.query());
+  const data = await kekeluargaanSummary(c.env.DB, filters);
+  // Panel detail satu kekeluargaan: filter global lain tetap berlaku.
+  const key = c.req.query('pilih')?.trim().toLowerCase() || null;
+  const detail = key ? await profile(c.env.DB, { ...filters, kekeluargaan: key }) : null;
+  return c.json({ meta: await datasetMeta(c.env.DB), filters, data: { ...data, detail: detail && { key, ...detail } } });
+});
+api.get('/stats/pendidikan', async (c) => {
+  const filters = parseFilters(c.req.query());
+  return c.json({ meta: await datasetMeta(c.env.DB), filters, data: await pendidikan(c.env.DB, filters) });
+});
+api.get('/stats/persebaran', async (c) => {
+  const filters = parseFilters(c.req.query());
+  const province = c.req.query('provinsi')?.trim().toLowerCase() || null;
+  return c.json({ meta: await datasetMeta(c.env.DB), filters, data: await persebaran(c.env.DB, filters, province) });
+});
+api.get('/stats/kualitas', async (c) => {
+  const filters = parseFilters(c.req.query());
+  return c.json({ meta: await datasetMeta(c.env.DB), filters, data: await kualitas(c.env.DB, filters) });
 });
 
 // ---------- Impor CSV ----------
