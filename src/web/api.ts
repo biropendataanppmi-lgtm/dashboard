@@ -16,9 +16,14 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (init.body && !(init.body instanceof FormData)) headers.set('Content-Type', 'application/json');
   let res: Response;
   try {
-    res = await fetch(`/api${path}`, { ...init, headers, credentials: 'same-origin' });
+    // redirect 'manual': tanpa sesi, Cloudflare Access mengalihkan ke halaman loginnya (domain lain).
+    // Pengalihan lintas domain itu membuat fetch gagal seolah-olah jaringan putus, jadi ditangkap di sini.
+    res = await fetch(`/api${path}`, { ...init, headers, credentials: 'same-origin', redirect: 'manual' });
   } catch {
     throw new ApiError(0, 'Tidak dapat terhubung ke server. Periksa koneksi internet lalu coba lagi.');
+  }
+  if (res.type === 'opaqueredirect' || (res.status >= 300 && res.status < 400)) {
+    throw new ApiError(401, 'Anda belum login atau sesi login sudah berakhir. Klik Login untuk masuk.');
   }
   const text = await res.text();
   let data: any = null;
