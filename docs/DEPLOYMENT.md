@@ -20,7 +20,7 @@ Cloudflare Dashboard › Workers & Pages › Create › **Import a repository** 
 
 | Isian | Nilai |
 |---|---|
-| Project name | `sistem-pendataan-ppmi` (harus sama dengan `name` di `wrangler.jsonc`) |
+| Project name | `nationaldatabaseppmi` (harus sama dengan `name` di `wrangler.jsonc`) |
 | Build command | `npm run build` |
 | Deploy command | `npm run deploy:ci` |
 | Production branch | `main` |
