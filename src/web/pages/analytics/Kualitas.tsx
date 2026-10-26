@@ -164,7 +164,7 @@ export function KualitasPage() {
                         </tr>
                       ))}
                       <tr>
-                        <td>Tahun kedatangan berbeda dari dua digit awal ID</td>
+                        <td>Tahun kedatangan berbeda dari angkatan di ID (hanya catatan)</td>
                         <td className="num">—</td>
                         <td className="num">{fmt(d.arrivalIdMismatch)}</td>
                       </tr>

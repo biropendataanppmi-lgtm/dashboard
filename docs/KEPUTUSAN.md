@@ -9,7 +9,7 @@ Dokumen ini memisahkan keputusan pemilik proyek, asumsi teknis sementara, dan ha
 | H1 | Pembatalan per impor/perubahan, bukan kembali ke titik waktu | Model tabel aktif + riwayat revisi; pembatalan maju |
 | H2 + kartu | Spreadsheet hanya untuk mahasiswa baru; data lama disunting di web | Add Only sebagai mode bawaan |
 | H3 | `Kedatangan_di_Mesir` = kedatangan pertama (angkatan) | Tahun diturunkan ke `arrival_year`, dipakai filter |
-| H4 | ID tetap walau tahun kedatangan dikoreksi | Tahun berbeda dari prefiks ID hanya warning |
+| H4 | ID tetap walau tahun kedatangan dikoreksi; dua digit awal ID = angkatan, bukan tahun kedatangan | Tahun berbeda dari angkatan di ID hanya catatan (warning), tidak dipakai sebagai acuan |
 | H5 (diubah) | ID dibuat di spreadsheet, tanpa sistem | Sistem tidak membuat ID; hanya memvalidasi format dan keunikan |
 | Format ID | Mengikuti spreadsheet Biro: 6 angka `YYNNNN` (contoh 260128) | Menggantikan `YY-NNNN` dari spesifikasi awal; migrasi 0002 |
 | H6 | Sel kosong = kosongkan nilai | Diterapkan, dengan hitungan dan peringatan di preview |
