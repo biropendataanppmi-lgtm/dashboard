@@ -19,7 +19,7 @@ const n = Number(process.argv[2] || 1600);
 const sheetHeaders = process.argv.includes('--header-spreadsheet');
 for (let i = 1; i <= n; i++) {
   const year = pick([2022, 2023, 2024, 2025], [15, 22, 28, 35]);
-  const id = `${String(year).slice(2)}-${String(i).padStart(4,'0')}`;
+  const id = `${String(year).slice(2)}${String(i).padStart(4,'0')}`;
   const g = pick(['Laki-laki','Perempuan','laki-laki','Banat',''],[50,40,5,3,2]);
   let k = pick(kek, kw); if (r()<0.03) k = k.toLowerCase(); if (r()<0.02) k = '';
   const pi = prov.indexOf(pick(prov, pw));

@@ -11,7 +11,7 @@ const confirm = { confirmWarnings: true, includeWarningRows: true };
 
 let db: D1Database;
 let seq = 0;
-const id = () => `25-${String(++seq).padStart(4, '0')}`;
+const id = () => `25${String(++seq).padStart(4, '0')}`;
 
 async function load(rows: Row[]) {
   const p = await createPreview(db, ADMIN, `f${seq}.csv`, toCsv(rows), 'add_only');
@@ -101,7 +101,7 @@ describe('halaman Kualitas Data', () => {
       student({ ID_Mahasiswa: id(), Mediator: '', Kedatangan_di_Mesir: '2024' }),
     ]);
     await load([student({ ID_Mahasiswa: id() })]);
-    await setStudentStatus(db, ADMIN, '25-0004', false, 'pulang_lulus', null);
+    await setStudentStatus(db, ADMIN, '250004', false, 'pulang_lulus', null);
 
     const q = await kualitas(db, noFilter);
     expect(q.total).toBe(3);

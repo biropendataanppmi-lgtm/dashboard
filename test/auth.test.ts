@@ -60,11 +60,11 @@ describe('autentikasi dan otorisasi backend', () => {
       db.prepare(`INSERT INTO change_sets (id, kind, actor_email, created_at, summary_json) VALUES (1, 'import', 'a', '2026-01-01T00:00:00Z', '{}')`),
       db.prepare(
         `INSERT INTO students (student_code, name_latin, passport_no, email, phone_no, kekeluargaan, created_change_set_id, last_change_set_id, created_at, updated_at)
-         VALUES ('25-0001', 'Nama Rahasia', 'PASPOR1', 'r@example.org', '0812', 'Kekeluargaan A', 1, 1, 'x', 'x')`,
+         VALUES ('250001', 'Nama Rahasia', 'PASPOR1', 'r@example.org', '0812', 'Kekeluargaan A', 1, 1, 'x', 'x')`,
       ),
     ]);
     const text = await (await app.request('http://localhost/api/stats/overview', {}, env())).text();
     expect(text).toContain('Kekeluargaan A');
-    expect(text).not.toMatch(/Nama Rahasia|PASPOR1|r@example.org|25-0001/);
+    expect(text).not.toMatch(/Nama Rahasia|PASPOR1|r@example.org|250001/);
   });
 });

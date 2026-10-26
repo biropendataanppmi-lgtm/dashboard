@@ -28,7 +28,7 @@ Mengikuti Jawaban H1 (pembatalan per perubahan) dan rekomendasi audit E1 opsi B.
 
 | Tabel | Fungsi |
 |---|---|
-| `students` | Satu baris per mahasiswa, selalu berisi nilai terkini. `id` internal terpisah dari `student_code` (ID Mahasiswa `YY-NNNN`). Tidak dapat dihapus (dijaga trigger). |
+| `students` | Satu baris per mahasiswa, selalu berisi nilai terkini. `id` internal terpisah dari `student_code` (ID Mahasiswa 6 angka `YYNNNN`, migrasi 0002). Tidak dapat dihapus (dijaga trigger). |
 | `change_sets` | Satu baris per tindakan yang mengubah data (impor, suntingan, penonaktifan, pengaktifan, pembatalan). `id` = nomor versi dataset. |
 | `student_revisions` | Nilai sebelum/sesudah untuk kolom yang berubah. Dasar pembatalan. Berisi data pribadi; tidak pernah dikirim utuh ke frontend. |
 | `dataset_state` | Versi dataset terkini dan keterangan cakupan data. |
