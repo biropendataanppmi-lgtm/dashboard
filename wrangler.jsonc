@@ -22,8 +22,8 @@
   "vars": {
     // Produksi selalu "access". Mode "dev" hanya diaktifkan lewat .dev.vars di komputer lokal.
     "AUTH_MODE": "access",
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
+    "ACCESS_TEAM_DOMAIN": "icy-glitter-fb5f.cloudflareaccess.com",
+    "ACCESS_AUD": "48d44c88f74070598fb303da1c3ff6e564a02899ba9a9d68f2672863be62af4f"
   },
   "observability": { "enabled": true }
 }
