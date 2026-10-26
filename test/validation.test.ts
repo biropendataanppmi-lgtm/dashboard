@@ -43,6 +43,11 @@ describe('validasi file', () => {
     expect(res.presentFields).not.toContain('mediator');
   });
 
+  it('ID harus 6 angka seperti di spreadsheet Biro', () => {
+    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '260001' }), student({ ID_Mahasiswa: '26-0002' }), student({ ID_Mahasiswa: '26001' })]));
+    expect(res.rows.map((r) => r.issues.some((i) => i.code === 'format_id'))).toEqual([false, true, true]);
+  });
+
   it('ID, tanggal, dan kedatangan divalidasi; nilai analitik kosong hanya warning', () => {
     const res = validateCsvText(
       toCsv([
@@ -62,21 +67,21 @@ describe('validasi file', () => {
   });
 
   it('kedatangan boleh berupa tahun saja; tahun berbeda dari prefiks ID hanya warning', () => {
-    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '24-0009', Kedatangan_di_Mesir: '2025' })]));
+    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '240009', Kedatangan_di_Mesir: '2025' })]));
     expect(res.rows[0].issues.map((i) => i.code)).toEqual(['tahun_tidak_cocok_id']);
     expect(res.rows[0].values.arrival_date).toBe('2025');
   });
 
   it('ID ganda di dalam file menahan semua kemunculannya', () => {
-    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '25-9999' }), student({ ID_Mahasiswa: '25-9999' })]));
+    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '259999' }), student({ ID_Mahasiswa: '259999' })]));
     expect(res.rows.every((r) => r.issues.some((i) => i.code === 'id_ganda_di_file'))).toBe(true);
   });
 
   it('nomor telepon, paspor, dan ID tetap teks: + dan nol di depan dipertahankan', () => {
-    const res = validateCsvText(toCsv([student({ Nomor_Telepon_Aktif: '+20 0100 123', Nomor_Paspor: '0012345', ID_Mahasiswa: '25-0001' })]));
+    const res = validateCsvText(toCsv([student({ Nomor_Telepon_Aktif: '+20 0100 123', Nomor_Paspor: '0012345', ID_Mahasiswa: '250001' })]));
     expect(res.rows[0].values.phone_no).toBe('+20 0100 123');
     expect(res.rows[0].values.passport_no).toBe('0012345');
-    expect(res.rows[0].studentCode).toBe('25-0001');
+    expect(res.rows[0].studentCode).toBe('250001');
     expect(normalizePhone('+20 0100 123')).toBe('200100123');
   });
 });
@@ -90,8 +95,8 @@ describe('perencanaan impor', () => {
   });
 
   it('Add Only menolak ID yang sudah ada; Update Existing menolak ID baru', () => {
-    const file = validateCsvText(toCsv([student({ ID_Mahasiswa: '25-0100' }), student({ ID_Mahasiswa: '25-0101' })]));
-    const db = [existing('25-0100', { name_latin: 'Lama' })];
+    const file = validateCsvText(toCsv([student({ ID_Mahasiswa: '250100' }), student({ ID_Mahasiswa: '250101' })]));
+    const db = [existing('250100', { name_latin: 'Lama' })];
     const add = planImport(file, 'add_only', db, 1);
     expect(add.rows.map((r) => r.action)).toEqual(['held', 'create']);
     const upd = planImport(file, 'update_existing', db, 1);
@@ -100,14 +105,14 @@ describe('perencanaan impor', () => {
   });
 
   it('record yang tidak berubah tidak ditulis ulang; sel kosong mengosongkan nilai dengan peringatan', () => {
-    const row = student({ ID_Mahasiswa: '25-0200' });
+    const row = student({ ID_Mahasiswa: '250200' });
     const file = validateCsvText(toCsv([row]));
     const values = { ...file.rows[0].values };
-    const same = planImport(file, 'full_sync', [existing('25-0200', values)], 1);
+    const same = planImport(file, 'full_sync', [existing('250200', values)], 1);
     expect(same.rows[0].action).toBe('unchanged');
 
     const cleared = validateCsvText(toCsv([{ ...row, Fakultas: '' }]));
-    const plan = planImport(cleared, 'full_sync', [existing('25-0200', values)], 1);
+    const plan = planImport(cleared, 'full_sync', [existing('250200', values)], 1);
     expect(plan.rows[0].action).toBe('update');
     expect(plan.rows[0].cleared).toEqual(['faculty']);
     expect(plan.summary.clearedByColumn).toEqual({ Fakultas: 1 });
@@ -115,8 +120,8 @@ describe('perencanaan impor', () => {
   });
 
   it('paspor yang sama dengan record lain ditandai kandidat duplikat, tidak digabung', () => {
-    const file = validateCsvText(toCsv([student({ ID_Mahasiswa: '25-0300', Nomor_Paspor: 'b 77 1' })]));
-    const plan = planImport(file, 'add_only', [existing('25-0299', { passport_no: 'B771' })], 1);
+    const file = validateCsvText(toCsv([student({ ID_Mahasiswa: '250300', Nomor_Paspor: 'b 77 1' })]));
+    const plan = planImport(file, 'add_only', [existing('250299', { passport_no: 'B771' })], 1);
     expect(plan.rows[0].action).toBe('create');
     expect(plan.rows[0].duplicateCandidate).toBe(true);
     expect(plan.summary.duplicateCandidates).toBe(1);
@@ -155,13 +160,13 @@ describe('daftar baku dan spreadsheet asli', () => {
   });
 
   it('nama kolom pendek di spreadsheet ikut dikenali', () => {
-    const res = validateCsvText('ID Mahasiswa,Nama Lengkap,Provinsi di Indonesia,Kabupaten/Kota di Indonesia,Kekeluargaan\n25-0001,A,Jawa Tengah,Semarang,KMJ\n');
+    const res = validateCsvText('ID Mahasiswa,Nama Lengkap,Provinsi di Indonesia,Kabupaten/Kota di Indonesia,Kekeluargaan\n250001,A,Jawa Tengah,Semarang,KMJ\n');
     expect(res.fileIssues.filter((i) => i.severity === 'error')).toEqual([]);
     expect(res.presentFields).toEqual(expect.arrayContaining(['name_latin', 'origin_province', 'origin_regency', 'kekeluargaan']));
   });
 
   it('header yang sama dalam dua ejaan dianggap ganda', () => {
-    const res = validateCsvText('ID_Mahasiswa,Nama_Lengkap_Latin,Nama Lengkap (Latin)\n25-0001,A,A\n');
+    const res = validateCsvText('ID_Mahasiswa,Nama_Lengkap_Latin,Nama Lengkap (Latin)\n250001,A,A\n');
     expect(res.fileIssues.map((i) => i.code)).toContain('header_ganda');
   });
 
@@ -179,7 +184,7 @@ describe('daftar baku dan spreadsheet asli', () => {
   });
 
   it('tahun kedatangan 00YY dibaca sebagai 20YY dengan peringatan; tanggal lahir 00YY tetap error', () => {
-    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '25-0001', Kedatangan_di_Mesir: '0025-12-29' }), student({ Tanggal_Lahir: '0005-01-01' })]));
+    const res = validateCsvText(toCsv([student({ ID_Mahasiswa: '250001', Kedatangan_di_Mesir: '0025-12-29' }), student({ Tanggal_Lahir: '0005-01-01' })]));
     expect(res.rows[0].values.arrival_date).toBe('2025-12-29');
     expect(res.rows[0].issues.map((i) => i.code)).toEqual(['tahun_diperbaiki']);
     expect(res.rows[1].issues.map((i) => i.code)).toEqual(['format_tanggal']);

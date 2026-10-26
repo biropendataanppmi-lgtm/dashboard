@@ -10,7 +10,7 @@ export function student(overrides: Row = {}): Row {
   seq++;
   const n = String(seq).padStart(4, '0');
   return {
-    ID_Mahasiswa: `25-${n}`,
+    ID_Mahasiswa: `25${n}`,
     Email_Address: `contoh${n}@example.org`,
     Jenis_Kelamin: seq % 2 ? 'Laki-laki' : 'Perempuan',
     Nama_Lengkap_Latin: `Mahasiswa Contoh ${n}`,

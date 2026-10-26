@@ -11,6 +11,7 @@ Dokumen ini memisahkan keputusan pemilik proyek, asumsi teknis sementara, dan ha
 | H3 | `Kedatangan_di_Mesir` = kedatangan pertama (angkatan) | Tahun diturunkan ke `arrival_year`, dipakai filter |
 | H4 | ID tetap walau tahun kedatangan dikoreksi | Tahun berbeda dari prefiks ID hanya warning |
 | H5 (diubah) | ID dibuat di spreadsheet, tanpa sistem | Sistem tidak membuat ID; hanya memvalidasi format dan keunikan |
+| Format ID | Mengikuti spreadsheet Biro: 6 angka `YYNNNN` (contoh 260128) | Menggantikan `YY-NNNN` dari spesifikasi awal; migrasi 0002 |
 | H6 | Sel kosong = kosongkan nilai | Diterapkan, dengan hitungan dan peringatan di preview |
 | H7 | Tidak ada status kemahasiswaan | Hanya alasan penonaktifan (pulang/lulus, data salah, lainnya) |
 | H9 | Agregat dibagikan lewat laporan berkala | V1 hanya untuk admin Biro |

@@ -1,7 +1,8 @@
 // Normalisasi nilai. Nilai asli tetap disimpan; bentuk ternormalisasi hanya untuk
 // pencocokan kandidat duplikat dan pengelompokan analitik (audit F-31).
 
-export const STUDENT_CODE_PATTERN = /^\d{2}-\d{4}$/;
+/** ID Mahasiswa: 6 angka YYNNNN, contoh 260128 (format spreadsheet Biro). */
+export const STUDENT_CODE_PATTERN = /^\d{6}$/;
 
 export function cleanText(value: string | null | undefined): string | null {
   if (value == null) return null;

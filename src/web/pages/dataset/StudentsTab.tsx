@@ -42,7 +42,7 @@ export function StudentsTab() {
       <div className="filter-bar">
         <div className="field" style={{ flex: '1 1 260px' }}>
           <label htmlFor="s-q">Cari ID atau nama</label>
-          <input id="s-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="contoh: 25-0128 atau nama" />
+          <input id="s-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="contoh: 250128 atau nama" />
         </div>
         <div className="field">
           <label htmlFor="s-status">Status data</label>

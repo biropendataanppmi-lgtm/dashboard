@@ -11,11 +11,11 @@
 
 Urutan kolom bebas. Header dapat ditulis seperti di tabel (`Nama_Lengkap_Latin`) atau seperti di spreadsheet Biro (`Nama Lengkap (Latin)`, `Kekeluargaan/Konsulat`, `Domisili di Indonesia (Provinsi)`, dan seterusnya). Nama pendek `Nama Lengkap`, `Provinsi di Indonesia`, `Kabupaten/Kota di Indonesia`, dan `Kekeluargaan` juga diterima. Huruf besar/kecil, spasi, garis bawah, dan tanda baca diabaikan saat mencocokkan header.
 
-**Spreadsheet Biro saat ini belum memiliki kolom ID.** Tambahkan kolom `ID Mahasiswa` (format `YY-NNNN`) sebelum mengekspor CSV; tanpa kolom ini file ditolak.
+**Spreadsheet Biro saat ini belum memiliki kolom ID.** Tambahkan kolom `ID Mahasiswa` (6 angka `YYNNNN`, contoh `260128`) sebelum mengekspor CSV; tanpa kolom ini file ditolak.
 
 | Header | Wajib | Keterangan |
 |---|---|---|
-| `ID_Mahasiswa` | Ya | Format `YY-NNNN`, contoh `25-0128`. Dibuat di spreadsheet (Register ID), bukan oleh sistem. |
+| `ID_Mahasiswa` | Ya | 6 angka `YYNNNN`, contoh `260128` (dua digit tahun + nomor urut). Tanpa tanda hubung. Dibuat di spreadsheet (Register ID), bukan oleh sistem. |
 | `Email_Address` | | Peringatan jika formatnya tampak salah. |
 | `Jenis_Kelamin` | | Dikenali: Laki-laki/Perempuan, L/P, Banin/Banat, Pria/Wanita. |
 | `Nama_Lengkap_Latin` | Ya | |
@@ -71,7 +71,7 @@ Tidak ada mode yang menghapus atau menonaktifkan record yang tidak ada di file. 
 
 | Kode | Arti |
 |---|---|
-| `format_id` | ID bukan `YY-NNNN` |
+| `format_id` | ID bukan 6 angka `YYNNNN` |
 | `wajib_kosong` | ID atau nama Latin kosong |
 | `id_ganda_di_file` | ID yang sama dipakai lebih dari satu baris di file |
 | `id_sudah_ada` | Add Only: ID sudah ada di database |

@@ -158,7 +158,7 @@ function checkValue(col: ColumnDef, value: string | null, maxYear: number): Issu
   }
   switch (col.kind) {
     case 'id':
-      if (!STUDENT_CODE_PATTERN.test(value)) out.push({ severity: 'error', code: 'format_id', ...at, message: 'Format ID harus YY-NNNN, contoh 25-0128.' });
+      if (!STUDENT_CODE_PATTERN.test(value)) out.push({ severity: 'error', code: 'format_id', ...at, message: 'Format ID harus 6 angka (YYNNNN), contoh 260128.' });
       break;
     case 'email':
       if (!EMAIL_PATTERN.test(value)) out.push({ severity: 'warning', code: 'format_email', ...at, message: 'Format email tampak tidak valid.' });
