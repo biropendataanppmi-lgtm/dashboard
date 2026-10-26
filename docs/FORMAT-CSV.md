@@ -9,7 +9,7 @@
 
 ## Kolom
 
-Urutan kolom bebas. Header dapat ditulis seperti di tabel (`Nama_Lengkap_Latin`) atau seperti di spreadsheet Biro (`Nama Lengkap (Latin)`, `Kekeluargaan/Konsulat`, `Domisili di Indonesia (Provinsi)`, dan seterusnya). Huruf besar/kecil, spasi, garis bawah, dan tanda baca diabaikan saat mencocokkan header.
+Urutan kolom bebas. Header dapat ditulis seperti di tabel (`Nama_Lengkap_Latin`) atau seperti di spreadsheet Biro (`Nama Lengkap (Latin)`, `Kekeluargaan/Konsulat`, `Domisili di Indonesia (Provinsi)`, dan seterusnya). Nama pendek `Nama Lengkap`, `Provinsi di Indonesia`, `Kabupaten/Kota di Indonesia`, dan `Kekeluargaan` juga diterima. Huruf besar/kecil, spasi, garis bawah, dan tanda baca diabaikan saat mencocokkan header.
 
 **Spreadsheet Biro saat ini belum memiliki kolom ID.** Tambahkan kolom `ID Mahasiswa` (format `YY-NNNN`) sebelum mengekspor CSV; tanpa kolom ini file ditolak.
 
