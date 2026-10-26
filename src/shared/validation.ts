@@ -98,11 +98,11 @@ export function validateCsvText(text: string, now: Date = new Date()): Validated
       issues.push(...cellIssues, ...checkValue(col, value, maxYear));
     });
 
-    // Tahun kedatangan vs prefiks ID: ID tetap walau tahun dikoreksi (Jawaban H4), jadi hanya warning.
+    // Tahun kedatangan vs angkatan di ID: angkatan 26 bisa datang akhir 2025, jadi hanya warning (Jawaban H4).
     if (studentCode && STUDENT_CODE_PATTERN.test(studentCode) && values.arrival_date) {
       const year = arrivalYear(values.arrival_date);
       if (year && String(year).slice(2) !== (studentCode as string).slice(0, 2)) {
-        issues.push({ severity: 'warning', code: 'tahun_tidak_cocok_id', column: 'Kedatangan_di_Mesir', message: 'Tahun kedatangan tidak sama dengan dua digit awal ID. ID tidak akan diubah.' });
+        issues.push({ severity: 'warning', code: 'tahun_tidak_cocok_id', column: 'Kedatangan_di_Mesir', message: 'Tahun kedatangan berbeda dari angkatan di ID (dua digit awal). Hanya catatan: wajar bila datang sebelum tahun angkatannya; ID dan tanggal tidak diubah.' });
       }
     }
     return { rowNumber, studentCode, values, issues };
