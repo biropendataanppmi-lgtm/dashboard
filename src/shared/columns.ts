@@ -75,6 +75,10 @@ export const COLUMN_BY_HEADER = new Map(COLUMNS.map((c) => [c.header, c]));
 const HEADER_ALIASES: Record<string, StudentField> = {
   'Domisili di Indonesia (Kabupaten/Kota)': 'origin_regency',
   'Domisili di Indonesia (Provinsi)': 'origin_province',
+  'Nama Lengkap': 'name_latin',
+  'Provinsi di Indonesia': 'origin_province',
+  'Kabupaten/Kota di Indonesia': 'origin_regency',
+  'Kekeluargaan': 'kekeluargaan',
 };
 
 export function headerKey(header: string): string {

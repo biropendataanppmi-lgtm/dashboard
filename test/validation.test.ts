@@ -154,6 +154,12 @@ describe('daftar baku dan spreadsheet asli', () => {
     expect(res.rows[0].issues).toEqual([]);
   });
 
+  it('nama kolom pendek di spreadsheet ikut dikenali', () => {
+    const res = validateCsvText('ID Mahasiswa,Nama Lengkap,Provinsi di Indonesia,Kabupaten/Kota di Indonesia,Kekeluargaan\n25-0001,A,Jawa Tengah,Semarang,KMJ\n');
+    expect(res.fileIssues.filter((i) => i.severity === 'error')).toEqual([]);
+    expect(res.presentFields).toEqual(expect.arrayContaining(['name_latin', 'origin_province', 'origin_regency', 'kekeluargaan']));
+  });
+
   it('header yang sama dalam dua ejaan dianggap ganda', () => {
     const res = validateCsvText('ID_Mahasiswa,Nama_Lengkap_Latin,Nama Lengkap (Latin)\n25-0001,A,A\n');
     expect(res.fileIssues.map((i) => i.code)).toContain('header_ganda');
