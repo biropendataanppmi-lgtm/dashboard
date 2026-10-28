@@ -2,27 +2,6 @@ import { PageHeader } from '../components/ui';
 import { fmtTime } from '../format';
 import { useSession } from '../session';
 
-export function LandingPage() {
-  return (
-    <div className="landing">
-      <div className="landing-inner">
-        <span className="eyebrow">PPMI Mesir · Biro Data dan Statistika</span>
-        <h1>Sistem Pendataan PPMI Mesir 2026/2027</h1>
-        <p className="tagline">“Selalu ada cerita di balik setiap angka yang ada.”</p>
-        <p>
-          Sistem pengelolaan data mahasiswa Indonesia di Mesir: impor dan pemeriksaan data, riwayat perubahan, serta dashboard analitik untuk
-          mendukung penyusunan informasi dan kebijakan. Akses hanya untuk administrator Biro Data dan Statistika.
-        </p>
-        {/* Tautan biasa (bukan navigasi SPA) agar permintaan melewati Cloudflare Access dan login muncul. */}
-        <a className="btn primary" href="/app">
-          Masuk
-        </a>
-        <span className="fine">Tidak ada data mahasiswa yang ditampilkan sebelum login. Akun yang tidak terdaftar tidak akan mendapat akses.</span>
-      </div>
-    </div>
-  );
-}
-
 export function AccountPage() {
   const s = useSession();
   return (
