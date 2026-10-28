@@ -19,12 +19,15 @@ Halaman `/` untuk pengunjung yang belum login. Halaman ini tidak memanggil API d
 - Gaya landing tidak memakai `.landing`, `.landing-inner`, atau `.eyebrow`; class itu milik layar Belum masuk / Akun tidak memiliki akses (`session.tsx`).
 - Panel Dashboard hanya pratinjau konseptual tanpa angka. Jangan menambahkan endpoint publik untuk landing.
 
+## Aset
+
+- Logo PPMI: `src/web/assets/logo-ppmi.png` (192×192, dipotong dari logo resmi tanpa mengubah isinya), tampil di navbar.
+- Favicon: `public/favicon.png` (64×64) dan `public/apple-touch-icon.png` (180×180), dipasang di `index.html` sehingga berlaku juga untuk dashboard.
+
 ## Aset sementara yang perlu diganti
 
 | Aset | Kondisi sekarang | Cara mengganti |
 | --- | --- | --- |
-| Logo PPMI | Belum ada di repository. Navbar menampilkan teks "PPMI Mesir / Biro Data dan Statistika" | Simpan file (mis. `src/web/assets/logo-ppmi.svg`), impor di `LandingPage.tsx`, isi konstanta `LOGO_SRC` |
-| Favicon | Belum ada | Tambahkan file ikon dan `<link rel="icon">` di `index.html` (berlaku juga untuk dashboard) |
 | Foto anggota tim | Slot inisial (MA, IN, UL) | Simpan foto di `src/web/assets/tim/`, impor di `panels.tsx`, isi field `photo` pada `TEAM` |
 | Ilustrasi 3D Hero | SVG isometrik buatan kode, tanpa file eksternal | Bisa diganti render 3D (WebP/PNG transparan, 4 keadaan) di komponen `SCENES` pada `HeroVisual.tsx` |
 

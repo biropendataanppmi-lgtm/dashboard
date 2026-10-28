@@ -3,6 +3,7 @@
 // tanpa route baru. Semua gaya berada di bawah .public-landing (landing.css) agar layar Denied dan dashboard tidak terdampak.
 import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import logoPpmi from '../../assets/logo-ppmi.png';
 import { AboutPanel, DashboardPanel, HeroPanel, PrivacyPanel, SystemPanel } from './panels';
 import './landing.css';
 
@@ -13,9 +14,6 @@ const PANELS = [
   { hash: '#dashboard', label: 'Dashboard', Panel: DashboardPanel },
   { hash: '#privasi-data', label: 'Privasi Data', Panel: PrivacyPanel },
 ];
-
-// Isi dengan path logo PPMI resmi (mis. hasil impor dari src/web/assets/) saat asetnya tersedia.
-const LOGO_SRC: string | null = null;
 
 const SWIPE_MIN_PX = 60;
 
@@ -85,14 +83,11 @@ export function LandingPage() {
     <div className={`public-landing${menuOpen ? ' menu-open' : ''}`}>
       <header className="lp-nav">
         <a className="lp-brand" href="/" onClick={(e) => onNavClick(e, 0)} aria-label="PPMI Mesir, ke Beranda">
-          {LOGO_SRC ? (
-            <img src={LOGO_SRC} alt="" />
-          ) : (
-            <span className="lp-brand-text">
-              <b>PPMI Mesir</b>
-              <span>Biro Data dan Statistika</span>
-            </span>
-          )}
+          <img src={logoPpmi} alt="" width="44" height="44" />
+          <span className="lp-brand-text">
+            <b>PPMI Mesir</b>
+            <span>Biro Data dan Statistika</span>
+          </span>
         </a>
         <button
           ref={menuButton}
