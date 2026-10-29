@@ -2,12 +2,45 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { ApiError } from '../api';
 import { fmt, fmtTime } from '../format';
+import { Icon } from './icons';
 
-export function PageHeader({ title, description, actions }: { title: string; description?: ReactNode; actions?: ReactNode }) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+  breadcrumb,
+  icon,
+}: {
+  title: string;
+  description?: ReactNode;
+  actions?: ReactNode;
+  /** Jejak navigasi kecil di atas judul, mis. ['Analytics', 'Overview']. Hanya teks, bukan tautan. */
+  breadcrumb?: string[];
+  /** Nama ikon dari components/icons sebagai aksen kecil di samping judul. */
+  icon?: string;
+}) {
   return (
-    <header className="page-header">
+    <header className={`page-header${icon ? ' has-icon' : ''}`}>
+      {breadcrumb && (
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            {breadcrumb.map((b, i) => (
+              <li key={b} aria-current={i === breadcrumb.length - 1 ? 'page' : undefined}>
+                {b}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
       <div className="btn-row" style={{ justifyContent: 'space-between' }}>
-        <h1>{title}</h1>
+        <div className="page-title">
+          {icon && (
+            <span className="page-icon">
+              <Icon name={icon} />
+            </span>
+          )}
+          <h1>{title}</h1>
+        </div>
         {actions}
       </div>
       {description && <p>{description}</p>}
@@ -26,27 +59,59 @@ export interface DatasetMetaInfo {
 export function DatasetMeta({ meta }: { meta: DatasetMetaInfo | null | undefined }) {
   if (!meta) return null;
   return (
-    <div className="meta-bar" role="note">
-      <span>
-        Cakupan data:{' '}
-        {meta.scopeDescription ? <b>{meta.scopeDescription}</b> : <span className="scope-missing">belum dijelaskan — isi di Kelola Dataset › Riwayat Dataset</span>}
+    <div className="meta-bar" role="note" aria-label="Informasi dataset">
+      <span className="meta-icon">
+        <Icon name="database" />
       </span>
-      <span>
-        Record aktif: <b className="num">{fmt(meta.activeRecords)}</b>
+      <span className="meta-item meta-scope">
+        <span className="meta-label">Cakupan data</span>
+        {meta.scopeDescription ? (
+          <b>{meta.scopeDescription}</b>
+        ) : (
+          <span className="scope-missing">
+            <Icon name="warn" />
+            belum dijelaskan — isi di Kelola Dataset › Riwayat Dataset
+          </span>
+        )}
       </span>
-      <span>
-        Pembaruan terakhir: <b>{meta.version === 0 ? 'belum ada data' : fmtTime(meta.updatedAt)}</b>
+      <span className="meta-item">
+        <span className="meta-label">Record aktif</span>
+        <b className="num">{fmt(meta.activeRecords)}</b>
       </span>
-      <span>
-        Versi dataset: <b className="num">{meta.version}</b>
+      <span className="meta-item">
+        <span className="meta-label">Pembaruan terakhir</span>
+        <b>{meta.version === 0 ? 'belum ada data' : fmtTime(meta.updatedAt)}</b>
+      </span>
+      <span className="meta-item">
+        <span className="meta-label">Versi dataset</span>
+        <b className="num">{meta.version}</b>
       </span>
     </div>
   );
 }
 
-export function Kpi({ label, value, hint }: { label: string; value: number | null; hint?: ReactNode }) {
+export function Kpi({
+  label,
+  value,
+  hint,
+  icon,
+  tone,
+}: {
+  label: string;
+  value: number | null;
+  hint?: ReactNode;
+  /** Opsional: ikon aksen di pojok kartu. */
+  icon?: string;
+  /** Opsional: 'primary' untuk KPI utama; 'banin'/'banat' memakai warna seri grafik pada ikon. */
+  tone?: 'primary' | 'banin' | 'banat';
+}) {
   return (
-    <div className="kpi">
+    <div className={`kpi${tone ? ` kpi-${tone}` : ''}`}>
+      {icon && (
+        <span className="kpi-icon">
+          <Icon name={icon} />
+        </span>
+      )}
       <span className="label">{label}</span>
       <span className="value">{fmt(value)}</span>
       {hint && <span className="hint">{hint}</span>}
