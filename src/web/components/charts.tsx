@@ -53,7 +53,7 @@ export function HBarChart({
               </span>
               <span className="hbar-track" aria-hidden="true">
                 {i.count > 0 ? (
-                  <span className={`hbar-fill${i.muted ? ' muted' : ''}`} style={{ display: 'block', width: `${max ? (i.count / max) * 100 : 0}%`, outline: selectedKey === i.key ? '2px solid var(--pine)' : undefined }} />
+                  <span className={`hbar-fill${i.muted ? ' muted' : ''}`} style={{ width: `${max ? (i.count / max) * 100 : 0}%` }} />
                 ) : null}
               </span>
               <span className="hbar-value">
@@ -66,11 +66,10 @@ export function HBarChart({
               key={i.key}
               type="button"
               role="listitem"
-              className="hbar-row"
+              className="hbar-row is-button"
               title={title}
               onClick={() => onSelect(i.key)}
               aria-pressed={selectedKey === i.key}
-              style={{ background: 'none', border: 0, padding: 0, textAlign: 'left', cursor: 'pointer' }}
             >
               {row}
             </button>
