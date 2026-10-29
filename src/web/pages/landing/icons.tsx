@@ -1,5 +1,17 @@
 // Satu keluarga ikon garis (24×24, stroke) untuk landing page publik.
-export type GlyphName = 'statistik' | 'kekeluargaan' | 'pendidikan' | 'persebaran' | 'impor' | 'riwayat' | 'kunci' | 'perisai' | 'admin';
+export type GlyphName =
+  | 'statistik'
+  | 'kekeluargaan'
+  | 'pendidikan'
+  | 'persebaran'
+  | 'impor'
+  | 'riwayat'
+  | 'kunci'
+  | 'perisai'
+  | 'admin'
+  | 'beranda'
+  | 'info'
+  | 'masuk';
 
 const GLYPHS: Record<GlyphName, string> = {
   statistik: 'M3.5 20h17M6 20v-7M10.5 20V6.5M15 20v-9.5M19.5 20v-4.5',
@@ -11,6 +23,10 @@ const GLYPHS: Record<GlyphName, string> = {
   kunci: 'M6.5 11h11a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5v-6A1.5 1.5 0 0 1 6.5 11zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
   perisai: 'M12 3.5 19 6v5.6c0 4.2-2.9 7.7-7 8.9-4.1-1.2-7-4.7-7-8.9V6l7-2.5zM9 12l2.2 2.2L15.2 10',
   admin: 'M12 11.5a3.8 3.8 0 1 0 0-7.6 3.8 3.8 0 0 0 0 7.6zM4.5 20c.5-3.9 3.6-6 7.5-6s7 2.1 7.5 6',
+  beranda: 'M3.5 10.5 12 3.8l8.5 6.7V19a1.5 1.5 0 0 1-1.5 1.5h-4v-6h-6v6H5A1.5 1.5 0 0 1 3.5 19v-8.5z',
+  info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5.5M12 7.6v.1',
+  // Pintu dengan panah masuk (log-in).
+  masuk: 'M14.5 3.5h4a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5h-4M10 16.5l4.5-4.5L10 7.5M14.5 12H3.5',
 };
 
 export function Glyph({ name }: { name: GlyphName }) {
