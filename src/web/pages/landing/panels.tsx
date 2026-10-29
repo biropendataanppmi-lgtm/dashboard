@@ -1,31 +1,112 @@
-// Isi panel landing page publik. Teks berasal dari draft yang disetujui dan dari landing lama;
+// Isi panel landing page publik. Teks berasal dari redaksi yang disetujui dan dari landing lama;
 // jangan menambah klaim, angka, atau data mahasiswa di sini.
 import type { ReactNode, Ref } from 'react';
+import fotoAzriel from '../../assets/tim/azriel.webp';
+import fotoFathan from '../../assets/tim/fathan.webp';
+import fotoIndyra from '../../assets/tim/indyra.webp';
+import fotoUnaysa from '../../assets/tim/unaysa.webp';
 import { HeroVisual } from './HeroVisual';
-import { IconTile, type GlyphName } from './icons';
+import { Glyph, IconTile, type GlyphName } from './icons';
 
 type HeadingRef = Ref<HTMLHeadingElement>;
 
-export function HeroPanel({ headingRef }: { headingRef: HeadingRef }) {
+function PanelHead({ eyebrow, title, headingRef, children }: { eyebrow: string; title: string; headingRef: HeadingRef; children: ReactNode }) {
   return (
-    <div className="lp-hero">
-      <div className="lp-hero-copy">
-        <span className="lp-eyebrow">Sistem Pendataan PPMI Mesir 2026/2027</span>
-        <h1 ref={headingRef} tabIndex={-1} className="lp-headline">
-          <span className="lp-headline-dark">Our Dashboard</span>
-          <span className="lp-headline-lime">PPMI Mesir</span>
-        </h1>
-      </div>
-      <HeroVisual />
+    <header className="lp-panel-head">
+      <span className="lp-eyebrow">{eyebrow}</span>
+      <h2 ref={headingRef} tabIndex={-1}>
+        {title}
+      </h2>
+      <div className="lp-panel-text">{children}</div>
+    </header>
+  );
+}
+
+/** Lapisan dekoratif panel (tidak interaktif, tidak dibaca pembaca layar). */
+function Deco({ kind }: { kind: 'hero' | 'about' | 'system' | 'dash' | 'privacy' }) {
+  return (
+    <div className={`lp-deco lp-deco-${kind}`} aria-hidden="true">
+      {kind === 'hero' && <span className="lp-dotgrid lp-dotgrid-hero" />}
+      {kind === 'about' && (
+        <>
+          <svg className="lp-blob lp-blob-1" viewBox="0 0 200 200">
+            <path d="M44 -6C78 -20 132 -4 156 30s20 84-8 116-82 40-118 22S-22 100-14 62 10 8 44-6z" />
+          </svg>
+          <svg className="lp-blob lp-blob-2" viewBox="0 0 200 200">
+            <path d="M60 10c40-14 96 4 118 42s8 92-30 116-92 18-122-10S-6 94 8 60 20 24 60 10z" />
+          </svg>
+          <span className="lp-dotgrid lp-dotgrid-about" />
+          <svg className="lp-sparkline" viewBox="0 0 300 80" preserveAspectRatio="none">
+            <polyline points="0,64 40,52 80,58 120,34 160,42 200,20 240,28 300,8" />
+          </svg>
+        </>
+      )}
+      {kind === 'system' && (
+        <>
+          <span className="lp-gridlines" />
+          <span className="lp-plane lp-plane-1" />
+          <span className="lp-plane lp-plane-2" />
+          <svg className="lp-geo-lines" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <line x1="0" y1="400" x2="400" y2="40" />
+            <line x1="60" y1="400" x2="400" y2="100" />
+            <circle cx="300" cy="129" r="5" />
+          </svg>
+        </>
+      )}
+      {kind === 'dash' && (
+        <>
+          <span className="lp-dotgrid lp-dotgrid-dash" />
+          <span className="lp-stack lp-stack-1" />
+          <span className="lp-stack lp-stack-2" />
+        </>
+      )}
+      {kind === 'privacy' && (
+        <>
+          <svg className="lp-rings-deco" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="96" />
+            <circle cx="100" cy="100" r="74" />
+            <circle cx="100" cy="100" r="52" />
+            <circle cx="100" cy="100" r="30" />
+          </svg>
+          <svg className="lp-shield-deco" viewBox="0 0 24 24">
+            <path d="M12 2.5 20 5.4v6.2c0 4.9-3.4 9-8 10.4-4.6-1.4-8-5.5-8-10.4V5.4l8-2.9z" />
+          </svg>
+          <span className="lp-dotgrid lp-dotgrid-privacy" />
+        </>
+      )}
     </div>
   );
 }
 
-// Foto anggota: isi `photo` dengan URL gambar asli (mis. impor dari src/web/assets/tim/) untuk mengganti slot inisial.
-const TEAM: { name: string; photo: string | null }[] = [
-  { name: 'Moch Azriel Putra Novendra', photo: null },
-  { name: 'Indyra Nadiva Nawi', photo: null },
-  { name: 'Unaysa Lukmanul Hakim', photo: null },
+export function HeroPanel({ headingRef }: { headingRef: HeadingRef }) {
+  return (
+    <>
+      <Deco kind="hero" />
+      <div className="lp-container lp-hero">
+        <div className="lp-hero-copy">
+          <span className="lp-eyebrow">Sistem Pendataan PPMI Mesir 2026/2027</span>
+          <h1 ref={headingRef} tabIndex={-1} className="lp-headline">
+            <span className="lp-headline-dark">Our Dashboard</span>
+            <span className="lp-headline-lime">PPMI Mesir</span>
+          </h1>
+        </div>
+        {/* Tautan biasa (bukan navigasi SPA) agar permintaan melewati Cloudflare Access dan login muncul. */}
+        <a className="lp-login" href="/app">
+          <Glyph name="masuk" />
+          <span>Login Admin</span>
+        </a>
+        <HeroVisual />
+      </div>
+    </>
+  );
+}
+
+// Foto disimpan di src/web/assets/tim/ (480×600, WebP). Ganti berkasnya untuk memperbarui foto.
+const TEAM: { name: string; kekeluargaan: string; role: string; photo: string | null }[] = [
+  { name: 'Moch Azriel Putra Novendra', kekeluargaan: 'GAMAJATIM', role: 'Kepala Biro', photo: fotoAzriel },
+  { name: 'Fathan Adinata', kekeluargaan: 'GAMAJATIM', role: 'Anggota Biro', photo: fotoFathan },
+  { name: 'Indyra Nadiva Nawi', kekeluargaan: 'KKS', role: 'Anggota Biro', photo: fotoIndyra },
+  { name: 'Unaysa Lukmanul Hakim', kekeluargaan: 'KMNTB', role: 'Anggota Biro', photo: fotoUnaysa },
 ];
 
 const initials = (name: string) =>
@@ -35,37 +116,34 @@ const initials = (name: string) =>
     .map((w) => w[0])
     .join('');
 
-function PanelHead({ eyebrow, title, headingRef, children }: { eyebrow: string; title: string; headingRef: HeadingRef; children: ReactNode }) {
-  return (
-    <header className="lp-panel-head">
-      <span className="lp-eyebrow">{eyebrow}</span>
-      <h2 ref={headingRef} tabIndex={-1}>
-        {title}
-      </h2>
-      <p>{children}</p>
-    </header>
-  );
-}
-
 export function AboutPanel({ headingRef }: { headingRef: HeadingRef }) {
   return (
-    <div className="lp-wrap lp-about">
-      <div className="lp-about-intro">
-        <PanelHead eyebrow="About Us" title="Biro Data dan Statistika" headingRef={headingRef}>
-          Biro Data dan Statistika PPMI Mesir 2026/2027 berperan dalam pengelolaan dan penyajian data untuk mendukung kebutuhan informasi serta pengambilan keputusan di
-          lingkungan PPMI Mesir.
-        </PanelHead>
-        <blockquote className="lp-quote">“Selalu ada cerita di balik setiap angka yang ada.”</blockquote>
+    <>
+      <Deco kind="about" />
+      <div className="lp-container lp-about">
+        <div className="lp-about-intro">
+          <PanelHead eyebrow="About Us" title="Biro Data dan Statistika" headingRef={headingRef}>
+            <p className="lp-shout">EITSS, JANGAN LANGSUNG KE SISTEMNYA DULU! 👀</p>
+            <p>Kenalan dulu, yuk, sama orang-orang di balik Sistem Pendataan PPMI Mesir. Siapa aja sih yang ada di balik layar, dan apa peran mereka? Yuk, kita kenalan! 🚀</p>
+          </PanelHead>
+          <blockquote className="lp-quote">“Selalu ada cerita di balik setiap angka yang ada.”</blockquote>
+        </div>
+        <ul className="lp-team" aria-label="Anggota Biro Data dan Statistika">
+          {TEAM.map((m) => (
+            <li key={m.name} className="lp-member">
+              <div className="lp-photo">
+                {m.photo ? <img src={m.photo} alt={`Foto ${m.name}`} width="480" height="600" loading="lazy" decoding="async" /> : <span aria-hidden="true">{initials(m.name)}</span>}
+              </div>
+              <div className="lp-member-info">
+                <b>{m.name}</b>
+                <span className="lp-role">{m.role}</span>
+                <span className="lp-chip">{m.kekeluargaan}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul className="lp-team" aria-label="Anggota Biro Data dan Statistika">
-        {TEAM.map((m) => (
-          <li key={m.name} className="lp-member">
-            <div className="lp-photo">{m.photo ? <img src={m.photo} alt={`Foto ${m.name}`} loading="lazy" /> : <span aria-hidden="true">{initials(m.name)}</span>}</div>
-            <b>{m.name}</b>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 }
 
@@ -77,20 +155,25 @@ const FEATURES: { icon: GlyphName; label: string }[] = [
 
 export function SystemPanel({ headingRef }: { headingRef: HeadingRef }) {
   return (
-    <div className="lp-wrap lp-system">
-      <PanelHead eyebrow="Tentang Sistem" title="Mengenal Sistem Pendataan" headingRef={headingRef}>
-        Sistem Pendataan PPMI Mesir 2026/2027 dirancang untuk membantu pengelolaan dan penyajian informasi mahasiswa Indonesia di Mesir secara lebih terstruktur, sehingga data
-        dapat dimanfaatkan untuk mendukung koordinasi dan pengambilan keputusan.
-      </PanelHead>
-      <ul className="lp-features" aria-label="Fitur sistem">
-        {FEATURES.map((f) => (
-          <li key={f.label}>
-            <IconTile name={f.icon} />
-            <span>{f.label}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Deco kind="system" />
+      <div className="lp-container lp-system">
+        <PanelHead eyebrow="Tentang Sistem" title="Mengenal Sistem Pendataan" headingRef={headingRef}>
+          <p>
+            Sistem Pendataan PPMI Mesir dirancang untuk membantu pengelolaan dan penyajian informasi mahasiswa Indonesia di Mesir secara lebih terstruktur, sehingga data dapat
+            dimanfaatkan untuk mendukung berjalannya organisasi berbasiskan data (data driven organization).
+          </p>
+        </PanelHead>
+        <ul className="lp-features" aria-label="Fitur sistem">
+          {FEATURES.map((f) => (
+            <li key={f.label}>
+              <IconTile name={f.icon} />
+              <span>{f.label}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
@@ -155,7 +238,7 @@ function Preview({ kind }: { kind: 'statistik' | 'kekeluargaan' | 'pendidikan' |
 }
 
 const DASH_CATEGORIES: { key: 'statistik' | 'kekeluargaan' | 'pendidikan' | 'persebaran'; label: string; text: string }[] = [
-  { key: 'statistik', label: 'Statistik', text: 'Ringkasan jumlah dan komposisi data mahasiswa yang tercatat.' },
+  { key: 'statistik', label: 'Overview', text: 'Ringkasan jumlah dan komposisi data mahasiswa yang tercatat.' },
   { key: 'kekeluargaan', label: 'Kekeluargaan', text: 'Jumlah mahasiswa per kekeluargaan beserta profil tiap kekeluargaan.' },
   { key: 'pendidikan', label: 'Pendidikan', text: 'Struktur pendidikan: jenjang, fakultas, dan jurusan.' },
   { key: 'persebaran', label: 'Persebaran', text: 'Asal provinsi dan kabupaten/kota di Indonesia serta domisili di Mesir.' },
@@ -163,25 +246,32 @@ const DASH_CATEGORIES: { key: 'statistik' | 'kekeluargaan' | 'pendidikan' | 'per
 
 export function DashboardPanel({ headingRef }: { headingRef: HeadingRef }) {
   return (
-    <div className="lp-wrap lp-dash">
-      <PanelHead eyebrow="Dashboard" title="Data dalam Satu Tampilan" headingRef={headingRef}>
-        Jelajahi gambaran data melalui kategori kekeluargaan, pendidikan, dan persebaran. Dashboard menyajikan ringkasan informasi untuk membantu memahami kondisi data yang
-        tersedia.
-      </PanelHead>
-      <ul className="lp-cards">
-        {DASH_CATEGORIES.map((c) => (
-          <li key={c.key} className="lp-card">
-            <Preview kind={c.key} />
-            <div className="lp-card-title">
-              <IconTile name={c.key} size="sm" />
-              <b>{c.label}</b>
-            </div>
-            <p>{c.text}</p>
-          </li>
-        ))}
-      </ul>
-      <p className="lp-note">Pratinjau konseptual, bukan data sebenarnya. Data mahasiswa hanya dapat dilihat administrator setelah login.</p>
-    </div>
+    <>
+      <Deco kind="dash" />
+      <div className="lp-container lp-dash">
+        <PanelHead eyebrow="Dashboard" title="Data dalam Satu Tampilan" headingRef={headingRef}>
+          <p>
+            Jelajahi gambaran data melalui kategori kekeluargaan, pendidikan, dan persebaran. Dashboard menyajikan ringkasan informasi untuk membantu memahami kondisi data yang
+            tersedia.
+          </p>
+        </PanelHead>
+        <ul className="lp-cards">
+          {DASH_CATEGORIES.map((c) => (
+            <li key={c.key} className="lp-card">
+              <div className="lp-card-face">
+                <Preview kind={c.key} />
+                <div className="lp-card-title">
+                  <IconTile name={c.key} size="sm" />
+                  <b>{c.label}</b>
+                </div>
+                <p>{c.text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p className="lp-note">Pratinjau konseptual, bukan data sebenarnya. Data mahasiswa hanya dapat dilihat administrator setelah login.</p>
+      </div>
+    </>
   );
 }
 
@@ -193,19 +283,24 @@ const PRIVACY_POINTS: { icon: GlyphName; text: string }[] = [
 
 export function PrivacyPanel({ headingRef }: { headingRef: HeadingRef }) {
   return (
-    <div className="lp-wrap lp-privacy">
-      <PanelHead eyebrow="Privasi Data" title="Privasi dan Perlindungan Data" headingRef={headingRef}>
-        Pengelolaan data dilakukan dengan memperhatikan pembatasan akses dan perlindungan informasi pribadi. Informasi yang ditampilkan kepada pengguna disesuaikan dengan
-        kebutuhan dan hak aksesnya.
-      </PanelHead>
-      <ul className="lp-points">
-        {PRIVACY_POINTS.map((p) => (
-          <li key={p.text}>
-            <IconTile name={p.icon} />
-            <span>{p.text}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Deco kind="privacy" />
+      <div className="lp-container lp-privacy">
+        <PanelHead eyebrow="Privasi Data" title="Privasi dan Perlindungan Data" headingRef={headingRef}>
+          <p>
+            Pengelolaan data dilakukan dengan memperhatikan pembatasan akses dan perlindungan informasi pribadi. Informasi yang ditampilkan kepada pengguna disesuaikan dengan
+            kebutuhan dan hak aksesnya.
+          </p>
+        </PanelHead>
+        <ul className="lp-points">
+          {PRIVACY_POINTS.map((p) => (
+            <li key={p.text}>
+              <IconTile name={p.icon} />
+              <span>{p.text}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }

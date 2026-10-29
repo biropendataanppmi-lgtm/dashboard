@@ -6,7 +6,7 @@ import { IconTile, type GlyphName } from './icons';
 export type CategoryKey = 'statistik' | 'kekeluargaan' | 'pendidikan' | 'persebaran';
 
 export const CATEGORIES: { key: CategoryKey; label: string; scene: string }[] = [
-  { key: 'statistik', label: 'Statistik', scene: 'Ilustrasi grafik batang tiga dimensi untuk statistik dan analitik' },
+  { key: 'statistik', label: 'Overview', scene: 'Ilustrasi grafik batang tiga dimensi untuk ringkasan data' },
   { key: 'kekeluargaan', label: 'Kekeluargaan', scene: 'Ilustrasi kelompok mahasiswa untuk kekeluargaan' },
   { key: 'pendidikan', label: 'Pendidikan', scene: 'Ilustrasi tumpukan buku dan toga untuk pendidikan' },
   { key: 'persebaran', label: 'Persebaran', scene: 'Ilustrasi globe dan penanda lokasi untuk persebaran' },
@@ -252,7 +252,20 @@ export function HeroVisual() {
   const reset = () => setScales(CATEGORIES.map(() => 1));
 
   return (
-    <div className="lp-visual" onPointerMove={magnify} onPointerLeave={reset}>
+    <div className="lp-visual" onPointerMove={magnify} onPointerLeave={reset} style={{ ['--orbit-turn' as string]: `${CATEGORIES.indexOf(current) * 32}deg` }}>
+      {/* Lapisan dekoratif: gradasi, cincin orbit, dan titik yang berputar sedikit saat kategori berganti. */}
+      <div className="lp-layer lp-layer-a" aria-hidden="true" />
+      <div className="lp-layer lp-layer-b" aria-hidden="true" />
+      <svg className="lp-rings" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="47" r="46" className="lp-ring-outer" />
+        <circle cx="50" cy="47" r="30" className="lp-ring-inner" />
+        <g className="lp-ring-dots">
+          <circle cx="50" cy="1" r="1.2" className="is-lime" />
+          <circle cx="96" cy="47" r="0.9" className="is-yellow" />
+          <circle cx="17.5" cy="14.5" r="0.8" className="is-pine" />
+          <circle cx="82.5" cy="79.5" r="0.7" className="is-lime" />
+        </g>
+      </svg>
       <svg className="lp-orbit" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <ellipse cx="50" cy="47" rx="43" ry="38" vectorEffect="non-scaling-stroke" />
       </svg>
