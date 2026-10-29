@@ -6,7 +6,7 @@ Halaman `/` untuk pengunjung yang belum login. Halaman ini tidak memanggil API d
 
 | File | Isi |
 | --- | --- |
-| `src/web/pages/landing/LandingPage.tsx` | Navbar desktop dengan indikator hijau, lima panel yang bergeser horizontal, pager (desktop), navigasi ikon di bawah layar (tablet dan HP), gestur geser |
+| `src/web/pages/landing/LandingPage.tsx` | Navbar desktop dengan indikator hijau, lima panel yang bergeser horizontal, tombol panah kiri/kanan keyboard, navigasi ikon di bawah layar (tablet dan HP), gestur geser |
 | `src/web/pages/landing/sound.ts` | Bunyi pendek "plup" saat panel berganti, disintesis dengan Web Audio API (tanpa file audio) |
 | `src/web/pages/landing/panels.tsx` | Isi panel Beranda (termasuk tombol Login Admin), About Us, Tentang Sistem, Dashboard, Privasi Data, dan dekorasi tiap panel |
 | `src/web/pages/landing/HeroVisual.tsx` | Ilustrasi 3D (SVG isometrik) empat keadaan dan ikon kategori pada orbit dengan efek Dock |

@@ -80,6 +80,20 @@ export function LandingPage() {
     return () => ro.disconnect();
   }, [index]);
 
+  // Tombol panah kiri/kanan di keyboard berpindah panel (pengganti pager di desktop).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      const t = e.target as HTMLElement | null;
+      if (t?.closest('input, textarea, select, [contenteditable="true"]')) return;
+      e.preventDefault();
+      goTo(index + (e.key === 'ArrowRight' ? 1 : -1));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
   const onPointerDown = (e: PointerEvent) => {
     swipe.current = e.pointerType === 'touch' ? { x: e.clientX, y: e.clientY } : null;
   };
@@ -132,27 +146,10 @@ export function LandingPage() {
         </div>
       </main>
 
-      {/* Desktop: pager kecil. Tablet dan HP: navigasi ikon di bawah layar. */}
-      <div className="lp-pager">
-        <button type="button" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Panel sebelumnya">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M14.5 6 8.5 12l6 6" />
-          </svg>
-        </button>
-        <span className="lp-dots" aria-hidden="true">
-          {PANELS.map((p, i) => (
-            <i key={p.label} className={i === index ? 'is-active' : undefined} />
-          ))}
-        </span>
-        <span className="lp-pager-label" aria-live="polite">
-          {PANELS[index].label}
-        </span>
-        <button type="button" onClick={() => goTo(index + 1)} disabled={index === PANELS.length - 1} aria-label="Panel berikutnya">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m9.5 6 6 6-6 6" />
-          </svg>
-        </button>
-      </div>
+      {/* Desktop: navbar + tombol panah keyboard. Tablet dan HP: navigasi ikon di bawah layar. */}
+      <span className="lp-live" aria-live="polite">
+        {PANELS[index].label}
+      </span>
       <nav className="lp-tabbar" aria-label="Panel landing page">
         <ul>
           {PANELS.map((p, i) => (

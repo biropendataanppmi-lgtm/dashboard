@@ -74,7 +74,7 @@
 /* ---------- Panel ---------- */
 .public-landing .lp-viewport { position: relative; overflow: hidden; touch-action: pan-y; }
 .public-landing .lp-track { display: flex; height: 100%; transition: transform 0.6s var(--lp-ease); will-change: transform; }
-.public-landing .lp-panel { position: relative; flex: 0 0 100%; height: 100%; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; padding-block: 32px 92px; }
+.public-landing .lp-panel { position: relative; flex: 0 0 100%; height: 100%; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; padding-block: 32px; }
 .public-landing .lp-panel > .lp-container { position: relative; z-index: 1; margin-block: auto; }
 .public-landing .lp-panel-0 { background: radial-gradient(55% 75% at 76% 48%, #eef8d6 0%, rgba(238, 248, 214, 0) 72%), var(--lp-white); }
 .public-landing .lp-panel-1 { background: linear-gradient(160deg, var(--lp-off) 0%, #eef6e3 100%); }
@@ -312,16 +312,8 @@
 .public-landing .lp-points li:hover .lp-tile,
 .public-landing .lp-points li:active .lp-tile { background: linear-gradient(145deg, #a6e85a, var(--lp-lime)); transform: scale(1.08); }
 
-/* ---------- Pager (desktop) ---------- */
-.public-landing .lp-pager { display: flex; align-items: center; gap: 12px; padding: 5px; position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); border-radius: 999px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); box-shadow: 0 6px 24px rgba(13, 46, 20, 0.1); z-index: 5; }
-.public-landing .lp-pager button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--lp-line); background: var(--lp-white); color: var(--lp-pine); display: grid; place-items: center; cursor: pointer; transition: background-color 0.2s, opacity 0.2s; }
-.public-landing .lp-pager button:hover:not(:disabled) { background: var(--lp-soft); }
-.public-landing .lp-pager button:disabled { opacity: 0.35; cursor: default; }
-.public-landing .lp-pager svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.public-landing .lp-dots { display: flex; gap: 6px; }
-.public-landing .lp-dots i { width: 8px; height: 8px; border-radius: 999px; background: rgba(13, 46, 20, 0.2); transition: width 0.3s var(--lp-ease), background-color 0.3s; }
-.public-landing .lp-dots i.is-active { width: 26px; background: var(--lp-lime); }
-.public-landing .lp-pager-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Pengumuman panel aktif untuk pembaca layar (tidak terlihat). */
+.public-landing .lp-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- Navigasi bawah (tablet dan HP) ---------- */
 .public-landing .lp-tabbar { display: none; }
@@ -330,8 +322,7 @@
   .public-landing { --lp-nav-h: 60px; --lp-pad: clamp(16px, 4.5vw, 32px); }
   .public-landing .lp-brand img { width: 36px; height: 36px; }
   .public-landing .lp-brand-text b { font-size: 16px; }
-  .public-landing .lp-menu,
-  .public-landing .lp-pager { display: none; }
+  .public-landing .lp-menu { display: none; }
   .public-landing .lp-panel { padding-block: 20px 24px; }
 
   .public-landing .lp-tabbar { display: block; position: relative; z-index: 20; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--lp-line); padding: 6px max(8px, env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-right)); }
